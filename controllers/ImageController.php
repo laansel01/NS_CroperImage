@@ -87,34 +87,6 @@ class ImageController extends Controller
         }
     }
 
-
-//    public function actionEditCrop($id)
-//    {
-//        if (isset($_POST["images"])) {
-//            $data = $_POST["images"];
-//            $image_array_1 = explode(";", $data);
-//            $image_array_2 = explode(",", $image_array_1[1]);
-//            echo "<pre>";
-//            $datas = base64_decode($image_array_2[1]);
-//
-//            $imageName = time() . '.png';
-//            $dir = Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR;
-//
-//            var_dump($dir);
-//
-//            $pp = file_put_contents($dir . $imageName, $datas);
-//
-//            exit();
-//
-//            return $this->redirect('create', [
-//                'filename' => $imageName,
-//                'directory' => $dir,
-//                'writefile' => $pp
-//            ]);
-//
-//        }
-//    }
-
     /**
      * Updates an existing image model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -172,6 +144,11 @@ class ImageController extends Controller
      */
     public function actionDelete($id)
     {
+        $model = $this->findModel($id);
+        $dir = Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR;
+        if (file_exists($dir.$model->photos)) {
+            unlink($dir . $model->photos);
+        }
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
