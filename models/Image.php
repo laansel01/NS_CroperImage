@@ -58,17 +58,17 @@ class Image extends \yii\db\ActiveRecord
         ];
     }
 
-    public function upload($model,$attribute){
-    $photo  = UploadedFile::getInstance($model, $attribute);
-      $path = $this->getUploadPath();
-    if ($this->validate() && $photo !== null) {
-        $fileName = md5($photo->baseName.time()) . '.' . $photo->extension;
-        if($photo->saveAs($path.$fileName)){
-          return $fileName;
-        }
-    }
-    return $model->isNewRecord ? false : $model->getOldAttribute($attribute);
-    }
+//    public function upload($model,$attribute){
+//    $photo  = UploadedFile::getInstance($model, $attribute);
+//      $path = $this->getUploadPath();
+//    if ($this->validate() && $photo !== null) {
+//        $fileName = md5($photo->baseName.time()) . '.' . $photo->extension;
+//        if($photo->saveAs($path.$fileName)){
+//          return $fileName;
+//        }
+//    }
+//    return $model->isNewRecord ? false : $model->getOldAttribute($attribute);
+//    }
 
     public function getUploadPath(){
         return Yii::getAlias('@webroot').'/'.$this->upload_foler.'/';

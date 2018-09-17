@@ -179,7 +179,7 @@ use kartik\file\FileInput;
                     let id = $('#image_id').val();
                     $.ajax({
                         url: "http://localhost:8080/image/update?id=".id,
-                        type: "GET",
+                        type: "POST",
                         data: {
                             "image_id": id,
                             "photo": response,

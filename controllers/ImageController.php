@@ -125,18 +125,42 @@ class ImageController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        var_dump($_POST['photo']);
-        exit();
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $model->photos = $model->upload($model, 'photos');
-            $model->save();
-            return $this->redirect(['view', 'id' => $model->image_id]);
+//        var_dump($model);
+//        exit();
+        if (isset($_POST["photo"])) {
+            $data = $_POST["photo"];
+            $image_array_1 = explode(";", $data);
+            $image_array_2 = explode(",", $image_array_1[1]);
+            $datas = base64_decode($image_array_2[1]);
+            $imageName = time() . '.png';
+            $dir = Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR;
+            if (file_exists($dir.$model->photos)){
+                unlink($dir.$model->photos);
+            }
+            file_put_contents($dir . $imageName, $datas);
+            $model->name = $_POST['name'];
+            $model->surname = $_POST['nickname'];
+            $model->photos = $imageName;
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->image_id]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
             ]);
         }
+//
+//        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+//            $model->photos = $model->upload($model, 'photos');
+//            $model->save();
+//        } else {
+//            return $this->render('update', [
+//                'model' => $model,
+//            ]);
+//        }
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**
